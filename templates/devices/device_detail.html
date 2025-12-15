@@ -1,0 +1,38 @@
+"""
+{% extends 'base.html' %}
+{% block content %}
+<h1>Device {{ device.serial_number }}</h1>
+<p><strong>Customer:</strong> {{ device.customer_name }}</p>
+<p><strong>Status:</strong> {{ device.get_status_display }}</p>
+<p><strong>Warranty:</strong> {{ device.warranty }}</p>
+
+
+<h3>Actions</h3>
+<form method="post" action="{% url 'devices:device_action' device.pk %}">{% csrf_token %}
+<div class="mb-3">
+<label for="note" class="form-label">Note</label>
+<input type="text" name="note" id="note" class="form-control" />
+</div>
+<div class="btn-group" role="group">
+<button name="action" value="to_pre_inspection" class="btn btn-secondary">Pre-Inspection</button>
+<button name="action" value="to_warranty_check" class="btn btn-warning">Warranty Check</button>
+<button name="action" value="warranty_yes" class="btn btn-success">Mark Warranty (RMA)</button>
+<button name="action" value="warranty_no" class="btn btn-danger">No Warranty (Maintenance)</button>
+<button name="action" value="to_cost_approval" class="btn btn-info">To Cost Approval</button>
+<button name="action" value="cost_approve" class="btn btn-primary">Approve Cost</button>
+<button name="action" value="cost_reject" class="btn btn-outline-primary">Reject Cost - Deliver</button>
+<button name="action" value="deliver" class="btn btn-dark">Deliver</button>
+</div>
+</form>
+
+
+<h3 class="mt-4">Logs</h3>
+<ul>
+{% for log in device.logs.all %}
+<li>{{ log.timestamp }} - {{ log.previous_status }} → {{ log.new_status }} ({{ log.user }}) - {{ log.notes }}</li>
+{% empty %}
+<li>No logs yet.</li>
+{% endfor %}
+</ul>
+{% endblock %}
+"""

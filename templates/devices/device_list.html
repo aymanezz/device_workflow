@@ -1,0 +1,22 @@
+"""
+{% extends 'base.html' %}
+{% block content %}
+<h1>Devices</h1>
+<a class="btn btn-primary mb-3" href="{% url 'devices:device_create' %}">Create Device</a>
+<table class="table table-striped">
+<thead><tr><th>Serial</th><th>Customer</th><th>Status</th><th>Actions</th></tr></thead>
+<tbody>
+{% for d in devices %}
+<tr>
+<td>{{ d.serial_number }}</td>
+<td>{{ d.customer_name }}</td>
+<td>{{ d.get_status_display }}</td>
+<td><a class="btn btn-sm btn-outline-primary" href="{% url 'devices:device_detail' d.pk %}">View</a></td>
+</tr>
+{% empty %}
+<tr><td colspan="4">No devices yet.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}
+"""
